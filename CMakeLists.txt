@@ -30,6 +30,35 @@ add_library(libsddl "")
 
 message("Install path: ${CMAKE_INSTALL_PREFIX}")
 
+
+
+
+
+
+
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+
+include_directories(${CONAN_INCLUDE_DIRS_TBB}  ${CONAN_INCLUDE_DIRS_libarchive})
+
+link_directories(${CONAN_LIB_DIRS_TBB} ${CONAN_LIB_DIRS_libarchive})
+
+CONAN_BASIC_SETUP(TARGETS)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 set (USE_JSON true)
 message("USE_JSON: ${USE_JSON}")
 
@@ -52,20 +81,6 @@ include_directories (
     ${LibArchive_INCLUDE_DIRS}
     )
 ENDIF()
-
-
-
-
-
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-
-include_directories(${CONAN_INCLUDE_DIRS_TBB}  ${CONAN_INCLUDE_DIRS_libarchive})
-
-link_directories(${CONAN_LIB_DIRS_TBB} ${CONAN_LIB_DIRS_libarchive})
-
-CONAN_BASIC_SETUP(TARGETS)
-
 
 
 
