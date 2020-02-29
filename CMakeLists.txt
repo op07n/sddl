@@ -1,7 +1,7 @@
 PROJECT(sddl)
 cmake_minimum_required(VERSION 3.1.2)
 
-set(USE_JSON true)
+set(USE_JSON false)
 
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
