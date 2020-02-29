@@ -1,9 +1,9 @@
 project( SDDL LANGUAGES CXX)
 
-cmake_minimum_required(VERSION 3.1)
-set ( CMAKE_BUILD_TYPE Debug )
+cmake_minimum_required(VERSION 3.1.2)
+set(CMAKE_VERBOSE_MAKEFILE TRUE)
+set ( CMAKE_BUILD_TYPE Release )
 set(CMAKE_CXX_FLAGS_MYREL "-O3")
-#set ( CMAKE_BUILD_TYPE Release )
 
 set (CMAKE_CXX_STANDARD 11)
 
@@ -19,16 +19,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-message("  Platform: Linux")
-add_definitions ( -Wall) #-pedantic -Werror -ansi -c -I.  -std=c++11
-#add_definitions ( -Wall -std=c++11 -Wno-int-in-bool-context)
+message("  Platform: Windows")
+add_definitions ( -Wall) 
 
-#set_source_files_properties(filename.c PROPERTIES LANGUAGE CXX )
 
-#SET(CMAKE_C_COMPILER g++)
+
 
 add_library(libsddl "")
-#set_property(TARGET libsddl PROPERTY C_STANDARD 11)
+
 
 message("Install path: ${CMAKE_INSTALL_PREFIX}")
 
@@ -43,30 +41,36 @@ message("  Path: ${SDDL_PATH}")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH};${SDDL_PATH}/cmake_modules)
 message("  CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}") 
 
-find_package ( LibArchive REQUIRED )
+# find_package ( LibArchive REQUIRED )
 message("  LibArchive_INCLUDE_DIRS: ${LibArchive_INCLUDE_DIRS}")
 message("  LibArchive_LIBRARIES: ${LibArchive_LIBRARIES}")
 
-find_package(TBB REQUIRED)
-
-#find_package(TBB COMPONENTS tbbmalloc tbbmalloc_proxy tbb_preview)
-
-#find_package ( Boost REQUIRED COMPONENTS regex system program_options)
-#message("  Boost_INCLUDE_DIR: ${Boost_INCLUDE_DIR}")
-#message("  Boost_LIBRARY_DIR: ${Boost_LIBRARY_DIR}")
-
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH};${SDDL}/cmake_modules)
-#message("  CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}") 
-
-#find_package ( JSONCPP REQUIRED )
-#message("  JSONCPP_INCLUDE_DIR: ${JSONCPP_INCLUDE_DIR}")
-#message("  JSONCPP_LIBRARY: ${JSONCPP_LIBRARY}")
+# find_package(TBB REQUIRED)
 
 include_directories (
-#    ${Boost_INCLUDE_DIRS}
+
     ${LibArchive_INCLUDE_DIRS}
     )
 ENDIF()
+
+
+
+
+
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+
+include_directories(${CONAN_INCLUDE_DIRS_TBB}  ${CONAN_INCLUDE_DIRS_libarchive})
+
+link_directories(${CONAN_LIB_DIRS_TBB} ${CONAN_LIB_DIRS_libarchive})
+
+CONAN_BASIC_SETUP(TARGETS)
+
+
+
+
+
+
 
 include_directories (
     ${CMAKE_SOURCE_DIR}
@@ -78,26 +82,19 @@ include(src/CMakeLists.txt)
 
 configure_file(src/global.h.in include/global.h)
 
-#set_property(TARGET sddl PROPERTY C_STANDARD 11)
+
 
 IF (USE_JSON)
 target_link_libraries ( sddl
-#    ${Boost_LIBRARIES}
     ${LibArchive_LIBRARIES}
     ${TBB_LIBRARIES})
 ENDIF()
+
 
 install (TARGETS libsddl DESTINATION lib
     PUBLIC_HEADER DESTINATION include/sddl)
     
 install (TARGETS sddl DESTINATION bin)
-
-# build a CPack driven installer package
-#include (InstallRequiredSystemLibraries)
-#set (CPACK_RESOURCE_FILE_LICENSE
-#     "${CMAKE_CURRENT_SOURCE_DIR}/gpl.txt")
-#include (CPack)
-
 
 
 
