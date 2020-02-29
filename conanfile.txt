@@ -1,0 +1,8 @@
+[requires]
+TBB/2019_U4@conan/stable
+
+[options]
+TBB:shared=True
+
+[generators]
+cmake
