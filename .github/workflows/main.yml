@@ -54,6 +54,7 @@ jobs:
             call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
             mkdir build
             cd build
+            SET PROCESSOR_ARCHITECTURE=i386
             "C:\Program Files\Conan\conan\conan.exe" install .. --build
             cmake -G "Visual Studio 16 2019" -A x64 -DCMAKE_VERBOSE_MAKEFILE=true -DCMAKE_CONFIGURATION_TYPES=Release ..
             msbuild.exe conan-test2.vcxproj /p:Configuration=Release /p:AdditionalIncludePaths=%CONAN_INCLUDE_DIRS_TBB%
