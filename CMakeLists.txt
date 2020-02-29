@@ -1,93 +1,19 @@
-project( SDDL )
-
+PROJECT(sddl)
 cmake_minimum_required(VERSION 3.1.2)
+
+set(USE_JSON true)
+
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
-
-
-
-
-
-
-
-
-
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 
-include_directories(${CONAN_INCLUDE_DIRS_TBB}  ${CONAN_INCLUDE_DIRS_libarchive})
+include_directories(${CONAN_INCLUDE_DIRS_TBB})
 
-link_directories(${CONAN_LIB_DIRS_TBB} ${CONAN_LIB_DIRS_libarchive})
+link_directories(${CONAN_LIB_DIRS_TBB})
 
 CONAN_BASIC_SETUP(TARGETS)
 
-
-
-
-
-
-
-
-
-
-
-
-add_library(libsddl "")
-
-message("Install path: ${CMAKE_INSTALL_PREFIX}")
-
-
-set (USE_JSON true)
-message("USE_JSON: ${USE_JSON}")
-
-IF (USE_JSON)
-
-set(SDDL_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
-message("  Path: ${SDDL_PATH}")
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH};${SDDL_PATH}/cmake_modules)
-message("  CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}") 
-
-# find_package ( LibArchive REQUIRED )
-message("  LibArchive_INCLUDE_DIRS: ${LibArchive_INCLUDE_DIRS}")
-message("  LibArchive_LIBRARIES: ${LibArchive_LIBRARIES}")
-
-# find_package(TBB REQUIRED)
-
-include_directories (
-
-    ${LibArchive_INCLUDE_DIRS}
-    )
-ENDIF()
-
-
-
-
-
-
-include_directories (
-    ${CMAKE_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${PROJECT_BINARY_DIR}/include
-    )
-
-include(src/CMakeLists.txt)
-
-configure_file(src/global.h.in include/global.h)
-
-
-
-IF (USE_JSON)
-target_link_libraries ( sddl
-    ${LibArchive_LIBRARIES}
-    ${TBB_LIBRARIES})
-ENDIF()
-
-
-install (TARGETS libsddl DESTINATION lib
-    PUBLIC_HEADER DESTINATION include/sddl)
-    
-install (TARGETS sddl DESTINATION bin)
-
-
+# ADD_EXECUTABLE(${CMAKE_PROJECT_NAME} test_package.cpp)
+# TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME} ${CONAN_LIBS})
 
 
